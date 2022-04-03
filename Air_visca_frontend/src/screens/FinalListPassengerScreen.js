@@ -51,8 +51,9 @@ class FinalListPassengerScreen extends Component {
               <tr>
                 <td scope="row">{passenger.passengerName}</td>
                 <td>{passenger.passengerAge}</td>
-                <td>{passenger.gender}</td>
+                <td>{passenger.passengerType}</td>
                 <td>{passenger.seatNumber}</td>
+                
               </tr>
             ))}
           </tbody>
