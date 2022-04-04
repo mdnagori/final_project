@@ -265,7 +265,7 @@ export default class UpdateFlightForm extends Component {
               </h6>
             </div>
             <button className="btn btn-primary" onClick={this.addFlight}>
-              Add Airline
+              Add Flight
             </button>
           </form>
         </div>

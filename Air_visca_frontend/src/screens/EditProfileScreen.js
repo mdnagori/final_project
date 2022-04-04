@@ -22,12 +22,13 @@ export default class EditProfileScreen extends Component {
       (res) => {
         let user = res.data.data;
         console.log(user.firstName);
+        console.log(res.data.data.mobileNo);
         this.setState({
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
           password: user.password,
-          mobileNo: user.mobileNo,
+          mobileNo: res.data.data.mobileNo,
           status: user.status,
           passwordError: "",
           mobileNoError: "",

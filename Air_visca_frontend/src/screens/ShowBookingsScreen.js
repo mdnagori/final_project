@@ -45,8 +45,8 @@ class ShowBookingScreen extends Component {
           <thead>
             <tr>
               <th className="hidden">Booking Id</th>
-              <th>Airline Id</th>
-              <th>User Id</th>
+              <th>Airline Name</th>
+              <th>User Name</th>
               <th>Booking Date</th>
               <th>Departure Date</th>
               <th>Arrival Date</th>
@@ -58,8 +58,8 @@ class ShowBookingScreen extends Component {
             {this.state.bookings.map((booking) => (
               <tr key={booking.bookingId}>
                 <td>{booking.bookingId}</td>
-                <td>{booking.airlineId}</td>
-                <td>{booking.userId}</td>
+                <td>{booking.airlineName}</td>
+                <td>{booking.userName}</td>
                 <td>{booking.bookingDate}</td>
                 <td>{booking.journeyDate}</td>
                 <td>{booking.arrivalDate}</td>

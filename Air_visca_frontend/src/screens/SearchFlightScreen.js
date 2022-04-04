@@ -6,6 +6,7 @@ import UserAPIService from "../service/UserAPIService";
 import amex from './images/american.png'
 import visa from './images/visa.png'
 import mastercard from './images/master.png'
+import DatePicker from 'react-datepicker';
 
 export default class SearchFlightScreen extends Component {
   constructor(props) {
@@ -35,7 +36,10 @@ export default class SearchFlightScreen extends Component {
       expiryDate: "",
       cardDto: {},
       message: "",
-      cvv:0
+      cvv:0,
+      flag:0,
+      check:'',
+      dateCheck:new Date()
     };
     this.bookTicket = this.bookTicket.bind(this);
     this.confirmBooking = this.confirmBooking.bind(this);
@@ -59,6 +63,11 @@ export default class SearchFlightScreen extends Component {
   searchFlight = (e) => {
     // var today = new Date(),
     // date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    this.state.check =sessionStorage.getItem("userid");
+    if(this.state.check){
+      this.setState.flag=1
+    this.setState({flag:1})
+    }
     console.log(
       "In clg " +
         this.state.fromcity +
@@ -188,36 +197,35 @@ export default class SearchFlightScreen extends Component {
   };
 
   submitCardDetails = () => {
-    // if(!this.state.cardNumber )
-    //   this.setState({cardNumberError:"Please enter card number"})
-    // else if(this.state.cardNumber.length >16 )
-    //   this.setState({cardNumberError:"Please enter a valid card number"})
-    // else if(this.state.cardNumber.length <16 )
-    //   this.setState({cardNumberError:"Please enter a valid card number"})
-    // else this.setState({ cardNumberError: "" });
+     if(!this.state.cardNumber )
+       this.setState({cardNumberError:"Please enter card number"})
+     else if(this.state.cardNumber.length >16 )
+       this.setState({cardNumberError:"Please enter a valid card number"})
+     else if(this.state.cardNumber.length <16 )
+       this.setState({cardNumberError:"Please enter a valid card number"})
+     else this.setState({ cardNumberError: "" });
     
-    // if(!this.state.nameOnCard)
-    //   this.setState({nameOnCardError:"Please enter Name"})
-    // else this.setState({ nameOnCardError: "" });
+     if(!this.state.nameOnCard)
+       this.setState({nameOnCardError:"Please enter Name"})
+     else this.setState({ nameOnCardError: "" });
 
-    // if(!this.state.expiryDate)
-    //   this.setState({expiryDateError:"Please enter Expiry Date"})
-    // else this.setState({ expiryDateError: "" });
-
-    // if(!this.state.cvv)
-    //   this.setState({cvvError :"Please enter cvv"})
-    // else if(this.state.cvv.length <3)
-    //   this.setState({cvvError :"Please enter a Valid cvv"})
-    // else if(this.state.cvv.length >3)
-    //   this.setState({cvvError :"Please enter a Valid cvv"})
-    // else this.setState({ cvvError: "" });  
-    // if(this.state.cardNumber && 
-    //   this.state.cardNumber.length ==10 &&
-    //   this.state.nameOnCard &&
-    //   this.state.expiryDate &&
-    //   this.state.cvv &&
-    //   this.state.cvv.length ==3)
-    // {
+     if(!this.state.expiryDate)
+       this.setState({expiryDateError:"Please enter Expiry Date"})
+ else this.setState({ expiryDateError: "" });
+     if(!this.state.cvv)
+       this.setState({cvvError :"Please enter cvv"})
+     else if(this.state.cvv.length <3)
+       this.setState({cvvError :"Please enter a Valid cvv"})
+     else if(this.state.cvv.length >3)
+       this.setState({cvvError :"Please enter a Valid cvv"})
+     else this.setState({ cvvError: "" });  
+     if(this.state.cardNumber && 
+       this.state.cardNumber.length ==16 &&
+       this.state.nameOnCard &&
+       this.state.expiryDate &&
+       this.state.cvv &&
+       this.state.cvv.length ==3)
+    {
     let card = {
       cardNumber: this.state.cardNumber,
       nameOnCard: this.state.nameOnCard,
@@ -228,7 +236,7 @@ export default class SearchFlightScreen extends Component {
     console.log(card);
     this.setState({ cardDto: card });
     console.log(this.state.cardDto);
-    //}
+    }
   };
   
   confirmBooking = () => {
@@ -335,6 +343,8 @@ export default class SearchFlightScreen extends Component {
                   placeholder="Departure Date"
                   onChange={this.onChange}
                 />
+                
+                
                 <h6 className="text-danger text-center my-4">
                   {this.state.departureDateError}
                 </h6>
@@ -422,7 +432,8 @@ export default class SearchFlightScreen extends Component {
                       <td>{flight.economyFare}</td>
                       <td>{flight.businessFare}</td>
                       <td>
-                        <button
+                      {
+                        this.state.flag > 0?(  <button
                           className="btn btn-outline-danger "
                           onClick={() => {
                             this.setState({ selectedFlightId: flight.id });
@@ -431,7 +442,8 @@ export default class SearchFlightScreen extends Component {
                         >
                           {" "}
                           Book Flight
-                        </button>
+                        </button>):(<p style={{backgroundColor:'red',fontFamily:"serif",color:"white"}}>Please login first to book ticket</p>)
+                      }
                       </td>
                     </tr>
                   );
@@ -516,7 +528,7 @@ export default class SearchFlightScreen extends Component {
               <div class="card-header">Ticket Summary</div>
               <div class="card-body">
                 <p class="card-text">
-                  Ariline Name: {this.state.selectedFlight.airlineName}
+                  Flight Name: {this.state.selectedFlight.airlineName}
                 </p>
                 <p class="card-text">
                   Route : {this.state.selectedFlight.fromCity}---
@@ -575,6 +587,7 @@ export default class SearchFlightScreen extends Component {
                       type="date"
                       class="form-control"
                       name="expiryDate"
+                    
                       placeholder="Expiry Date"
                       onChange={this.onChange}
                     />
@@ -585,7 +598,7 @@ export default class SearchFlightScreen extends Component {
                   <div class="col">
                     <label>CVV</label>
                     <input
-                      type="number"
+                      type="password"
                       class="form-control"
                       name="cvv"
                       placeholder="cvv"

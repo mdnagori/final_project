@@ -408,7 +408,7 @@ class SearchFlightScreen extends Component {
               <div class="card-header">Ticket Summary</div>
               <div class="card-body">
                 <p class="card-text">
-                  Ariline Name: {this.state.selectedFlight.airlineName}
+                  Flight Name: {this.state.selectedFlight.airlineName}
                 </p>
                 <p class="card-text">
                   Route : {this.state.selectedFlight.fromCity}---
