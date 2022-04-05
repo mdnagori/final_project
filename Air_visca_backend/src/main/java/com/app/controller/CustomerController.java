@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dao.UserRepository;
 import com.app.dto.CustomDTO;
 import com.app.dto.GetBookingListDTO;
 import com.app.dto.PostFeedbackDTO;
@@ -77,6 +78,7 @@ public class CustomerController {
 	@GetMapping("/get_userbookings/{uid}")
 	public ResponseEntity<?> getBookingByUserId(@PathVariable int uid){
 		List<GetBookingListDTO> list = bookingService.findByUserId(uid);
+		
 		if (!list.isEmpty())
 			return new ResponseEntity<>(new ResponseDTO<>("success", list), HttpStatus.OK);
 		else

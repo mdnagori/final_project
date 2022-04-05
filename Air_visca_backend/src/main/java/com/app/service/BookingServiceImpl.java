@@ -3,6 +3,7 @@ package com.app.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,7 @@ public class BookingServiceImpl implements IBookingService {
 		List<PassengerDTO> passList = new ArrayList<>();
 		bookList.forEach((b) -> b.getPassengerList().forEach((p) -> passList.add(new PassengerDTO(p.getPassengerName(),
 				p.getPassengerAge(), p.getGender().toString(), p.getPassengerType().toString(), p.getSeatNumber()))));
+		System.out.println(passList);
 		return passList;
 	}
 
@@ -128,9 +130,11 @@ public class BookingServiceImpl implements IBookingService {
 		List<GetBookingListDTO> bookList = new ArrayList<>();
 		List<Booking> bList = bookingRepo.getBookingByAirlineId(aid);
 		bList.forEach((b) -> {
-			if (b.getStatus() == 1)
+			if (b.getStatus() == 1) {
+				User user = userRepo.findById(b.getUserId().getId()).get();
+				Airline airline = airRepo.findById(aid).get();
 				bookList.add(new GetBookingListDTO(b.getId(), b.getBookingDate(), b.getTotalFare(), b.getJourneyDate(),
-						b.getArrivalDate(), b.getStatus(), b.getAirlineId(), b.getUserId().getId()));
+						b.getArrivalDate(), b.getStatus(), b.getAirlineId(),airline.getAirlineName() ,user.getFirstName()));}
 		});
 		return bookList;
 
@@ -139,9 +143,12 @@ public class BookingServiceImpl implements IBookingService {
 	public List<GetBookingListDTO> findByUserId(int uid) {
 		List<GetBookingListDTO> bookList = new ArrayList<>();
 		List<Booking> bList = bookingRepo.getBookingByUserId(uid);
+		
 		bList.forEach((b) -> {
-			
-				bookList.add(new GetBookingListDTO(b.getId(), b.getBookingDate(), b.getTotalFare(), b.getJourneyDate(), b.getArrivalDate(), b.getStatus(), b.getAirlineId(), b.getUserId().getId()));
+			Optional<Airline> findById = airRepo.findById(b.getAirlineId());
+			Optional<User> findById2 = userRepo.findById(uid);
+				bookList.add(new GetBookingListDTO(b.getId(), b.getBookingDate(), b.getTotalFare(), b.getJourneyDate(), b.getArrivalDate(), b.getStatus(), b.getAirlineId(),findById.get().getAirlineName(),findById2.get().getFirstName()));
+				
 		});
 		return bookList;
 		

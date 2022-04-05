@@ -60,6 +60,7 @@ public class UserController {
 
 	@GetMapping("/get_user/{userid}")
 	public ResponseEntity<?> getUserById(@PathVariable int userid) {
+//		System.out.println(userRepo.findById(userid).get());
 		return new ResponseEntity<>(new ResponseDTO<>("success", userRepo.findById(userid)), HttpStatus.OK);
 	}
 }
